@@ -2,6 +2,14 @@
 // All manual changes should be made outside the BEGIN_ and END_ blocks.
 // New source code should be placed in .dm files: choose File/New --> Code File.
 
+// Project-specific defines.
+// Tile types.
+#define TILE_UNKNOWN 0
+#define TILE_FLOOR 1
+#define TILE_WALL 2
+#define TILE_OBSTACLE 3
+#define TILE_FOG 4
+
 // BEGIN_INTERNALS
 // END_INTERNALS
 
