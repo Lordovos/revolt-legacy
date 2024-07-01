@@ -7,6 +7,14 @@ world
 	turf = /turf/default
 	mob = /mob/player
 
+world/New()
+	..()
+	::version = new (0, 0, 1)
+	::chat = new ()
+
+var/version/version
+var/obj/chat/chat
+
 proc/get_step_line(atom/ref, dir, dist = 1)
 	var/list/turfs = list()
 	var/turf/t

@@ -37,5 +37,6 @@
 #include "src\unit.dm"
 #include "src\unit_indicator.dm"
 #include "src\unit_message.dm"
+#include "src\version.dm"
 // END_INCLUDE
 

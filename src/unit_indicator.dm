@@ -16,7 +16,7 @@ obj/unit_indicator/New()
 	for (var/c in src.corners)
 		src.vis_contents += src.corners[c]
 
-obj/unit_indicator/proc/Update(mob/unit/u)
+obj/unit_indicator/proc/Draw()
 	// Distance in pixels that the corners begin at.
 	var/x_offset = 8
 	var/y_offset = 8
@@ -24,10 +24,10 @@ obj/unit_indicator/proc/Update(mob/unit/u)
 	var/dist = 2
 	var/ticks = 4
 
-	src.corners["bl"]?.Update(-x_offset, -y_offset, dist, dist, ticks)
-	src.corners["br"]?.Update(x_offset, -y_offset, -dist, dist, ticks)
-	src.corners["tl"]?.Update(-x_offset, y_offset, dist, -dist, ticks)
-	src.corners["tr"]?.Update(x_offset, y_offset, -dist, -dist, ticks)
+	src.corners["bl"]?.Draw(-x_offset, -y_offset, dist, dist, ticks)
+	src.corners["br"]?.Draw(x_offset, -y_offset, -dist, dist, ticks)
+	src.corners["tl"]?.Draw(-x_offset, y_offset, dist, -dist, ticks)
+	src.corners["tr"]?.Draw(x_offset, y_offset, -dist, -dist, ticks)
 
 obj/unit_indicator/corner
 	// I use parent_type here so that I can organize corners under unit_indicators without corners having their own internal list of corners.
@@ -41,7 +41,7 @@ obj/unit_indicator/corner/New(loc, icon_state)
 	..()
 	src.icon_state = icon_state
 
-obj/unit_indicator/corner/proc/Update(x_offset, y_offset, dist_w, dist_z, ticks)
+obj/unit_indicator/corner/proc/Draw(x_offset, y_offset, dist_w, dist_z, ticks)
 	animate(src)
 	src.pixel_x = x_offset
 	src.pixel_y = y_offset

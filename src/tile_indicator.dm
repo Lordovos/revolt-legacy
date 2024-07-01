@@ -1,7 +1,6 @@
 obj/tile_indicator
 	icon = 'assets/indicators.dmi'
 	icon_state = "default"
-	layer = FLY_LAYER
 	mouse_opacity = 0
 
 obj/tile_indicator/New()
