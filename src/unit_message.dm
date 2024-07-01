@@ -8,6 +8,7 @@ obj/unit_message
 
 obj/unit_message/New(loc, maptext)
 	..()
+	// TODO: Change this to a CSS class once we are far enough along to have an interface.
 	src.maptext = "<span style=\"text-align: center;\">[maptext]</span>"
 	animate(src, pixel_z = 24, time = 4)
 	animate(alpha = 0, time = 20)

@@ -31,6 +31,7 @@
 #include "maps\00-playground.dmm"
 #include "src\client.dm"
 #include "src\main.dm"
+#include "src\player.dm"
 #include "src\tile_indicator.dm"
 #include "src\tileset.dm"
 #include "src\unit.dm"

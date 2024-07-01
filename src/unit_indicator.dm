@@ -1,10 +1,11 @@
 obj/unit_indicator
 	layer = FLY_LAYER
+	mouse_opacity = 0
 	appearance_flags = RESET_COLOR | RESET_ALPHA | RESET_TRANSFORM
 
 	var/list/corners
 
-obj/unit_indicator/New(loc)
+obj/unit_indicator/New()
 	..()
 	src.corners = list(
 		"bl" = new /obj/unit_indicator/corner(null, "bl"),
@@ -32,8 +33,11 @@ obj/unit_indicator/corner
 	// I use parent_type here so that I can organize corners under unit_indicators without corners having their own internal list of corners.
 	parent_type = /obj
 	icon = 'assets/indicators.dmi'
+	mouse_opacity = 0
+	appearance_flags = RESET_COLOR | RESET_ALPHA | RESET_TRANSFORM
+	vis_flags = VIS_INHERIT_LAYER
 
-obj/unit_indicator/corner/New(loc, icon_state, pixel_w, pixel_z)
+obj/unit_indicator/corner/New(loc, icon_state)
 	..()
 	src.icon_state = icon_state
 

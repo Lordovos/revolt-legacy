@@ -5,15 +5,10 @@ world
 	view = "25x19"
 	fps = 40
 	turf = /turf/default
+	mob = /mob/player
 
 mob
 	icon = 'assets/units.dmi'
-	icon_state = "eye"
-
-mob/Login()
-	..()
-	src << "Hello, world!"
-	src.client.unit_indicator = new ()
 
 proc/get_step_line(atom/ref, dir, dist = 1)
 	var/list/turfs = list()
@@ -30,19 +25,25 @@ proc/get_step_line(atom/ref, dir, dist = 1)
 
 mob/verb/GetStepLine()
 	var/obj/tile_indicator/indicator
-	var/list/turfs = get_step_line(src, src.dir, 5)
+	var/list/turfs = ::get_step_line(src, src.dir, 5)
 
 	for (var/turf/t in turfs)
 		indicator = new (t)
 		animate(indicator, alpha = 0, time = 10, delay = 20)
+
+		spawn (30)
+			indicator.loc = null
 
 mob/verb/GetStepLineInterrupt()
 	var/obj/tile_indicator/indicator
-	var/list/turfs = get_step_line(src, src.dir, 5)
+	var/list/turfs = ::get_step_line(src, src.dir, 5)
 
 	for (var/turf/t in turfs)
 		indicator = new (t)
 		animate(indicator, alpha = 0, time = 10, delay = 20)
+
+		spawn (30)
+			indicator.loc = null
 
 		if (t.tile_type == TILE_WALL || t.tile_type == TILE_FOG)
 			var/obj/unit_message/um = new (null, "WALL")
@@ -62,6 +63,9 @@ mob/verb/GetView()
 	for (var/turf/t in turfs)
 		indicator = new (t)
 		animate(indicator, alpha = 0, time = 10, delay = 20)
+
+		spawn (30)
+			indicator.loc = null
 
 		if (t.tile_type == TILE_WALL || t.tile_type == TILE_FOG)
 			var/obj/unit_message/um = new (null, "WALL")

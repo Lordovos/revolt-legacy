@@ -14,14 +14,14 @@ mob/unit/Click()
 			c.selected_unit?.Unselect(c)
 			src.Select(c)
 
-mob/proc/Unselect(client/c)
-	c.selected_unit = null
-	src.vis_contents -= c.unit_indicator
-
-mob/proc/Select(client/c)
+mob/unit/proc/Select(client/c)
 	c.selected_unit = src
 	c.unit_indicator?.Update(src)
 	src.vis_contents += c.unit_indicator
+
+mob/unit/proc/Unselect(client/c)
+	c.selected_unit = null
+	src.vis_contents -= c.unit_indicator
 
 mob/unit/giant
 	pixel_x = 8
@@ -31,5 +31,4 @@ mob/unit/giant
 
 mob/unit/giant/New()
 	..()
-	src.appearance_flags |= PIXEL_SCALE
 	src.transform *= 2
