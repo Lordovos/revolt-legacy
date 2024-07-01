@@ -1,4 +1,5 @@
 mob/unit
+	icon = 'assets/units.dmi'
 	icon_state = "default"
 	pixel_y = 4
 	appearance_flags = PIXEL_SCALE
@@ -22,24 +23,37 @@ mob/unit/New()
 	src.UpdateMagic(src.max_magic)
 	src.UpdateAction(src.max_action)
 
-mob/unit/verb/Test()
-	set src in world
+mob/unit/Click()
+	var/client/c = usr?.client
+	var/obj/tile_indicator/indicator
+	var/list/turfs
 
-	for (var/v in src.vars)
-		world << "[v] = [src.vars[v]]"
+	if (c)
+		if (c.selected_unit == src)
+			c.selected_unit.Unselect(c)
 
-mob/unit/verb/Damage()
-	set src in world
+		else if (c.selected_unit != src)
+			c.selected_unit?.Unselect(c)
+			src.Select(c)
 
-	if (src.is_dead)
-		world << "[src.name] is already dead."
+			if (!src.is_dead)
+				turfs = oview(src.move_dist, src) - src.loc
 
-	else
-		var/damage = rand(1, 10)
+				for (var/turf/t in turfs)
+					indicator = new (t)
+					animate(indicator, alpha = 0, time = 10, delay = 20)
 
-		new /obj/unit_message(null, src, damage)
-		world << "[src.name] takes [damage] damage!"
-		src.UpdateHealth(src.health - damage)
+					spawn (30)
+						indicator.loc = null
+
+mob/unit/proc/Select(client/c)
+	c.selected_unit = src
+	c.unit_indicator?.Update(src)
+	src.vis_contents += c.unit_indicator
+
+mob/unit/proc/Unselect(client/c)
+	c.selected_unit = null
+	src.vis_contents -= c.unit_indicator
 
 mob/unit/proc/UpdateHealth(n)
 	src.health = clamp(n, 0, src.max_health)
@@ -56,51 +70,37 @@ mob/unit/proc/UpdateAction(n)
 
 mob/unit/proc/Death()
 	world << "[src.name] dies."
+	src.icon_state = "grave"
 
-mob/unit/test
-	name = "Temporal Knight"
-	color = COLOR_BLUE
-	job = "Temporal Knight"
-	level = 17
-	move_dist = 5
-	max_health = 30
-	max_magic = 85
-	magic_regen = 20
-	max_action = 5
+mob/unit/verb/Damage()
+	set src in world
 
-mob/unit/Click()
-	var/client/c = usr?.client
+	if (src.is_dead)
+		world << "[src.name] is already dead."
 
-	if (c)
-		if (c.selected_unit == src)
-			c.selected_unit.Unselect(c)
+	else
+		var/damage = rand(1, 10)
 
-		else if (c.selected_unit != src)
-			c.selected_unit?.Unselect(c)
-			src.Select(c)
+		new /obj/unit_message(null, src, damage)
+		world << "[src.name] takes [damage] damage!"
+		src.UpdateHealth(src.health - damage)
 
-mob/unit/proc/Select(client/c)
-	c.selected_unit = src
-	c.unit_indicator?.Update(src)
-	src.vis_contents += c.unit_indicator
+mob/unit/recruit
+	name = "Recruit"
+	icon_state = "recruit"
+	job = "Recruit"
+	level = 1
+	move_dist = 4
+	max_health = 20
+	max_magic = 5
+	magic_regen = 1
+	max_action = 2
 
-mob/unit/proc/Unselect(client/c)
-	c.selected_unit = null
-	src.vis_contents -= c.unit_indicator
-
-mob/unit/giant
-	bound_width = 32
-	bound_height = 32
-	name = "Giant"
-	color = COLOR_YELLOW
-	job = "Berserker"
-	level = 23
+mob/unit/vagrant
+	name = "Vagrant"
+	icon_state = "vagrant"
+	job = "Vagrant"
+	level = 1
 	move_dist = 3
-	max_health = 60
-	max_magic = 10
-	magic_regen = 2
-	max_action = 3
-
-mob/unit/giant/New()
-	..()
-	// src.transform *= 2
+	max_health = 10
+	max_action = 2

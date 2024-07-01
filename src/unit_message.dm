@@ -15,11 +15,5 @@ obj/unit_message/New(loc, mob/unit/u, maptext)
 	animate(alpha = 0, time = 12)
 
 	spawn (30)
-		src.Remove(u)
-
-obj/unit_message/proc/Remove(mob/unit/u)
-	u.vis_contents -= src
-	src.loc = null
-
-mob/verb/TakeDamage()
-	new /obj/unit_message(null, src, rand(1, 999))
+		u.vis_contents -= src
+		src.loc = null
