@@ -46,13 +46,7 @@ mob/verb/GetStepLineInterrupt()
 			indicator.loc = null
 
 		if (t.tile_type == TILE_WALL || t.tile_type == TILE_FOG)
-			var/obj/unit_message/um = new (null, "WALL")
-
-			t.vis_contents += um
-
-			spawn (30)
-				t.vis_contents -= um
-				um.loc = null
+			new /obj/unit_message(null, src, "WALL")
 
 			break
 
@@ -68,10 +62,4 @@ mob/verb/GetView()
 			indicator.loc = null
 
 		if (t.tile_type == TILE_WALL || t.tile_type == TILE_FOG)
-			var/obj/unit_message/um = new (null, "WALL")
-
-			t.vis_contents += um
-
-			spawn (30)
-				t.vis_contents -= um
-				um.loc = null
+			new /obj/unit_message(null, src, "WALL")

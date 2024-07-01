@@ -4,20 +4,22 @@ obj/unit_message
 	maptext_x = -16
 	maptext_width = 48
 	maptext_height = 32
-	appearance_flags = RESET_COLOR | RESET_ALPHA
+	appearance_flags = RESET_COLOR | RESET_ALPHA | RESET_TRANSFORM
 
-obj/unit_message/New(loc, maptext)
+obj/unit_message/New(loc, mob/unit/u, maptext)
 	..()
+	u.vis_contents += src
 	// TODO: Change this to a CSS class once we are far enough along to have an interface.
-	src.maptext = "<span style=\"text-align: center;\">[maptext]</span>"
+	src.maptext = "<span style=\"text-align: center; color: #fff; text-shadow: 1px 1px 0 #000;\">[maptext]</span>"
 	animate(src, pixel_z = 24, time = 4)
-	animate(alpha = 0, time = 20)
-
-mob/verb/Message()
-	var/obj/unit_message/um = new (null, "test")
-
-	src.vis_contents += um
+	animate(alpha = 0, time = 12)
 
 	spawn (30)
-		src.vis_contents -= um
-		um.loc = null
+		src.Remove(u)
+
+obj/unit_message/proc/Remove(mob/unit/u)
+	u.vis_contents -= src
+	src.loc = null
+
+mob/verb/TakeDamage()
+	new /obj/unit_message(null, src, rand(1, 999))
