@@ -33,22 +33,6 @@ mob/verb/GetStepLine()
 
 	for (var/turf/t in turfs)
 		indicator = new (t)
-
-		if (t.tile_type == TILE_FLOOR)
-			indicator.color = "#66ccff"
-
-		else if (t.tile_type == TILE_WALL)
-			indicator.color = "#f83800"
-
-		else if (t.tile_type == TILE_OBSTACLE)
-			indicator.color = "#f8b800"
-
-		else if (t.tile_type == TILE_FOG)
-			indicator.color = "#83d12c"
-
-		else if (t.tile_type == TILE_UNKNOWN)
-			indicator.color = "#d2d2c4"
-
 		animate(indicator, alpha = 0, time = 10, delay = 20)
 
 mob/verb/GetStepLineInterrupt()
@@ -57,23 +41,15 @@ mob/verb/GetStepLineInterrupt()
 
 	for (var/turf/t in turfs)
 		indicator = new (t)
-
-		if (t.density)
-			indicator.color = "#f83800"
-
 		animate(indicator, alpha = 0, time = 10, delay = 20)
 
-		if (t.density)
+		if (t.tile_type == TILE_WALL || t.tile_type == TILE_FOG)
 			break
 
 mob/verb/GetView()
 	var/obj/indicator/indicator
-	var/list/turfs = view(src, 5)
+	var/list/turfs = oview(1, src) - src.loc
 
 	for (var/turf/t in turfs)
 		indicator = new (t)
-
-		if (t.density)
-			indicator.color = "#f83800"
-
 		animate(indicator, alpha = 0, time = 10, delay = 20)
