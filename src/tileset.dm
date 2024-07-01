@@ -28,29 +28,3 @@ turf/tileset/water
 turf/tileset/wateredgestone
 	icon_state = "wateredgestone"
 	tile_type = TILE_OBSTACLE
-
-obj/indicator
-	icon = 'assets/tileset.dmi'
-	icon_state = "indicator"
-	layer = FLY_LAYER
-
-obj/indicator/New()
-	..()
-	src.SetColor(src.loc)
-
-obj/indicator/proc/SetColor(turf/t)
-	switch (t.tile_type)
-		if (TILE_UNKNOWN)
-			src.color = COLOR_GRAY
-
-		if (TILE_FLOOR)
-			src.color = COLOR_BLUE
-
-		if (TILE_WALL)
-			src.color = COLOR_RED
-
-		if (TILE_OBSTACLE)
-			src.color = COLOR_YELLOW
-
-		if (TILE_FOG)
-			src.color = COLOR_GREEN

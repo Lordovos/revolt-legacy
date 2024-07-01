@@ -8,11 +8,12 @@ world
 
 mob
 	icon = 'assets/units.dmi'
-	icon_state = "default"
+	icon_state = "eye"
 
 mob/Login()
 	..()
 	src << "Hello, world!"
+	src.client.unit_indicator = new ()
 
 proc/get_step_line(atom/ref, dir, dist = 1)
 	var/list/turfs = list()
@@ -28,7 +29,7 @@ proc/get_step_line(atom/ref, dir, dist = 1)
 	return turfs
 
 mob/verb/GetStepLine()
-	var/obj/indicator/indicator
+	var/obj/tile_indicator/indicator
 	var/list/turfs = get_step_line(src, src.dir, 5)
 
 	for (var/turf/t in turfs)
@@ -36,7 +37,7 @@ mob/verb/GetStepLine()
 		animate(indicator, alpha = 0, time = 10, delay = 20)
 
 mob/verb/GetStepLineInterrupt()
-	var/obj/indicator/indicator
+	var/obj/tile_indicator/indicator
 	var/list/turfs = get_step_line(src, src.dir, 5)
 
 	for (var/turf/t in turfs)
@@ -44,12 +45,29 @@ mob/verb/GetStepLineInterrupt()
 		animate(indicator, alpha = 0, time = 10, delay = 20)
 
 		if (t.tile_type == TILE_WALL || t.tile_type == TILE_FOG)
+			var/obj/unit_message/um = new (null, "WALL")
+
+			t.vis_contents += um
+
+			spawn (30)
+				t.vis_contents -= um
+				um.loc = null
+
 			break
 
 mob/verb/GetView()
-	var/obj/indicator/indicator
-	var/list/turfs = oview(1, src) - src.loc
+	var/obj/tile_indicator/indicator
+	var/list/turfs = oview(4, src) - src.loc
 
 	for (var/turf/t in turfs)
 		indicator = new (t)
 		animate(indicator, alpha = 0, time = 10, delay = 20)
+
+		if (t.tile_type == TILE_WALL || t.tile_type == TILE_FOG)
+			var/obj/unit_message/um = new (null, "WALL")
+
+			t.vis_contents += um
+
+			spawn (30)
+				t.vis_contents -= um
+				um.loc = null

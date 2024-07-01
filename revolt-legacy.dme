@@ -29,7 +29,12 @@
 
 // BEGIN_INCLUDE
 #include "maps\00-playground.dmm"
+#include "src\client.dm"
 #include "src\main.dm"
+#include "src\tile_indicator.dm"
 #include "src\tileset.dm"
+#include "src\unit.dm"
+#include "src\unit_indicator.dm"
+#include "src\unit_message.dm"
 // END_INCLUDE
 
