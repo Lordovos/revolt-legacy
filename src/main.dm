@@ -15,19 +15,21 @@ world/New()
 var/version/version
 var/obj/chat/chat
 
-proc/get_step_line(atom/ref, dir, dist = 1)
+// Returns all turfs in a line up to max_dist, and encodes them with the distance from the ref.
+proc/get_step_line(atom/ref, dir, max_dist = 1)
 	var/list/turfs = list()
 	var/turf/t
 
-	if (dist < 1)
+	if (max_dist < 1)
 		return turfs
 
-	for (var/i = 1 to dist)
+	for (var/i = 1 to max_dist)
 		t = get_step((i == 1) ? ref : t, dir)
-		turfs += t
+		turfs[t] = i
 
 	return turfs
 
+// Returns all turfs within max_dist of start that can be reached, and encodes them with the distance from start.
 proc/flood_fill(turf/start, max_dist = 1)
 	if (start && isturf(start))
 		var/queue/q = new ()

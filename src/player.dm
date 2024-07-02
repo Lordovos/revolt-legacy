@@ -13,7 +13,7 @@ mob/player/verb/GetStepLine()
 	for (var/turf/t in turfs)
 		indicator = new (t)
 		animate(indicator, alpha = 0, time = 10, delay = 20)
-		t.maptext = "<span style=\"text-align: right; margin-right: 4px; color: #fff; text-shadow: 1px 1px 0 #000;\">[get_dist(t, src.loc)]</span>"
+		t.maptext = "<span style=\"text-align: right; margin-right: 4px; color: #fff; text-shadow: 1px 1px 0 #000;\">[turfs[t]]</span>"
 
 		spawn (30)
 			indicator.loc = null
@@ -47,7 +47,7 @@ mob/player/verb/GetStepLineInterrupt()
 	for (var/turf/t in turfs)
 		indicator = new (t)
 		animate(indicator, alpha = 0, time = 10, delay = 20)
-		t.maptext = "<span style=\"text-align: right; margin-right: 4px; color: #fff; text-shadow: 1px 1px 0 #000;\">[get_dist(t, src.loc)]</span>"
+		t.maptext = "<span style=\"text-align: right; margin-right: 4px; color: #fff; text-shadow: 1px 1px 0 #000;\">[turfs[t]]</span>"
 
 		spawn (30)
 			indicator.loc = null
