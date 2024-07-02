@@ -7,14 +7,14 @@ mob/unit
 
 	var/job as text
 	var/level = 0 as num
-	var/move = 0 as num
-	var/max_move = 0 as num
 	var/health = 0 as num
 	var/max_health = 0 as num
 	var/is_dead = FALSE as anything in list(TRUE, FALSE)
 	var/magic = 0 as num
 	var/max_magic = 0 as num
 	var/magic_regen = 0 as num
+	var/move = 0 as num
+	var/max_move = 0 as num
 	var/action = 0 as num
 	var/max_action = 0 as num
 	var/list/abilities
@@ -36,6 +36,8 @@ mob/unit/Click()
 
 		if (u == src)
 			u.Unselect(c)
+			c.mob.loc = src.loc
+			c.eye = c.mob
 
 		else if (u != src)
 			u?.Unselect(c)
@@ -54,13 +56,12 @@ mob/unit/Click()
 					t.maptext = "<span style=\"text-align: right; margin-right: 4px; color: #fff; text-shadow: 1px 1px 0 #000;\">[src.path[t]]</span>"
 					new /obj/tile_indicator(t)
 
-			else
-				::chat?.Update("[src.name] is dead.")
-
 mob/unit/proc/Select(client/c)
 	c.selected_unit = src
 	c.unit_indicator?.Draw()
 	src.vis_contents += c.unit_indicator
+	c.mob.loc = src.loc
+	c.eye = src
 	world << "[src.name]\n[src.job], LV [src.level]\nMOVE [src.move]/[src.max_move]\nHP [src.health]/[src.max_health]\nMP [src.magic]/[src.max_magic]\nREGEN [src.magic_regen]\nAP [src.action]/[src.max_action]"
 
 mob/unit/proc/Unselect(client/c)
@@ -109,6 +110,13 @@ mob/unit/verb/Damage()
 
 		new /obj/unit_message(null, src, damage)
 		src.SetHealth(src.health - damage)
+		animate(src, color = "#d83828", time = 1)
+		animate(color = null, time = 1)
+
+		spawn (2)
+			animate(src, alpha = 0, time = 0.5, loop = 12)
+			animate(alpha = 255, time = 0.5)
+
 		::chat?.Update("[src.name] takes [damage] damage! (HP [src.health]/[src.max_health])")
 
 		if (src.health == 0)
@@ -120,17 +128,72 @@ mob/unit/recruit
 	icon_state = "recruit"
 	job = "Recruit"
 	level = 1
-	max_move = 4
 	max_health = 20
 	max_magic = 5
 	magic_regen = 1
+	max_move = 4
 	max_action = 2
+
+mob/unit/recruit/verb/Shortsword()
+	set src in world
+
+	var/damage = roll("1d4+2")
+
+	for (var/mob/unit/u in oview(1, src))
+		new /obj/unit_message(null, u, damage)
+		u.SetHealth(u.health - damage)
+		animate(u, color = "#d83828", time = 1)
+		animate(color = null, time = 1)
+
+		spawn (2)
+			animate(u, alpha = 0, time = 0.5, loop = 12)
+			animate(alpha = 255, time = 0.5)
+
+		::chat?.Update("[src.name] slashes with their shortsword! [u.name] takes [damage] damage.")
+		// ::chat?.Update("[u.name] takes [damage] damage! (HP [u.health]/[u.max_health])")
+
+		if (u.health == 0)
+			u.is_dead = TRUE
+			u.Death()
 
 mob/unit/vagrant
 	name = "Vagrant"
 	icon_state = "vagrant"
 	job = "Vagrant"
 	level = 1
-	max_move = 3
 	max_health = 10
+	max_move = 3
 	max_action = 2
+
+mob/unit/vagrant/verb/Dagger()
+	set src in world
+
+	if (!src.is_dead)
+		var/damage = roll("1d3+2")
+		var/dist = 1
+		var/list/path = ::flood_fill(src.loc, dist)
+
+		for (var/turf/t in path)
+			if (path[t] == 0  || path[t] > dist)
+				continue
+
+			var/mob/unit/u = t.GetUnit()
+
+			if (u && !u.is_dead)
+				new /obj/unit_message(null, u, damage)
+				u.SetHealth(u.health - damage)
+				animate(u, color = "#d83828", time = 1)
+				animate(color = null, time = 1)
+
+				spawn (2)
+					animate(u, alpha = 0, time = 0.5, loop = 12)
+					animate(alpha = 255, time = 0.5)
+
+				::chat?.Update("[src.name] stabs with their dagger! [u.name] takes [damage] damage.")
+
+				if (u.health == 0)
+					u.is_dead = TRUE
+					u.Death()
+
+	else
+		::chat?.Update("[src.name] is dead.")

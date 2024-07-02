@@ -6,6 +6,9 @@ mob/player/Login()
 	::chat?.Update("Hello, world! Welcome to Revolt Legacy.")
 	::chat?.Update("v[::version.Get()]")
 
+mob/player/verb/ClearChat()
+	::chat?.Clear()
+
 mob/player/verb/NextTurn()
 	for (var/mob/unit/u in world)
 		if (!u.is_dead)
