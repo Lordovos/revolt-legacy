@@ -122,6 +122,17 @@ mob/unit/verb/Damage()
 			src.is_dead = TRUE
 			src.Death()
 
+mob/unit/wizard
+	name = "Wizard"
+	icon_state = "wizard"
+	job = "Wizard"
+	level = 10
+	max_health = 45
+	max_magic = 80
+	magic_regen = 10
+	max_move = 5
+	max_action = 4
+
 mob/unit/recruit
 	name = "Recruit"
 	icon_state = "recruit"
