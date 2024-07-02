@@ -13,9 +13,11 @@ mob/player/verb/GetStepLine()
 	for (var/turf/t in turfs)
 		indicator = new (t)
 		animate(indicator, alpha = 0, time = 10, delay = 20)
+		t.maptext = "<span style=\"text-align: right; margin-right: 4px; color: #fff; text-shadow: 1px 1px 0 #000;\">[get_dist(t, src.loc)]</span>"
 
 		spawn (30)
 			indicator.loc = null
+			t.maptext = null
 
 		for (var/mob/unit/u in t)
 			var/crit = rand(0, 10)
@@ -45,13 +47,15 @@ mob/player/verb/GetStepLineInterrupt()
 	for (var/turf/t in turfs)
 		indicator = new (t)
 		animate(indicator, alpha = 0, time = 10, delay = 20)
+		t.maptext = "<span style=\"text-align: right; margin-right: 4px; color: #fff; text-shadow: 1px 1px 0 #000;\">[get_dist(t, src.loc)]</span>"
 
 		spawn (30)
 			indicator.loc = null
+			t.maptext = null
 
 		if (t.tile_type == TILE_WALL || t.tile_type == TILE_FOG)
 			break
-
+/*
 mob/player/verb/GetView()
 	var/obj/tile_indicator/indicator
 	var/list/turfs = oview(4, src) - src.loc
@@ -62,13 +66,19 @@ mob/player/verb/GetView()
 
 		spawn (30)
 			indicator.loc = null
-
+*/
 mob/player/verb/FloodFill()
+	var/obj/tile_indicator/indicator
 	var/list/turfs = ::flood_fill(src.loc, 5)
 
 	for (var/turf/t in turfs)
 		if (turfs[t] == 0 || turfs[t] > 5)
 			continue
 
+		indicator = new (t)
+		animate(indicator, alpha = 0, time = 10, delay = 20)
 		t.maptext = "<span style=\"text-align: right; margin-right: 4px; color: #fff; text-shadow: 1px 1px 0 #000;\">[turfs[t]]</span>"
-		new /obj/tile_indicator(t)
+
+		spawn (30)
+			indicator.loc = null
+			t.maptext = null
