@@ -6,6 +6,16 @@ mob/player/Login()
 	::chat?.Update("Hello, world! Welcome to Revolt Legacy.")
 	::chat?.Update("v[::version.Get()]")
 
+mob/player/verb/NextTurn()
+	for (var/mob/unit/u in world)
+		if (!u.is_dead)
+			u.SetMove(u.max_move)
+
+	if (src.client)
+		src.client.selected_unit?.Unselect(src.client)
+
+	::chat?.Update("Next turn.")
+
 mob/player/verb/GetStepLine()
 	var/obj/tile_indicator/indicator
 	var/list/turfs = ::get_step_line(src, src.dir, 5)
@@ -55,24 +65,17 @@ mob/player/verb/GetStepLineInterrupt()
 
 		if (t.tile_type == TILE_WALL || t.tile_type == TILE_FOG)
 			break
-/*
-mob/player/verb/GetView()
-	var/obj/tile_indicator/indicator
-	var/list/turfs = oview(4, src) - src.loc
 
-	for (var/turf/t in turfs)
-		indicator = new (t)
-		animate(indicator, alpha = 0, time = 10, delay = 20)
-
-		spawn (30)
-			indicator.loc = null
-*/
 mob/player/verb/FloodFill()
 	var/obj/tile_indicator/indicator
-	var/list/turfs = ::flood_fill(src.loc, 5)
+	var/dist = 1
+	var/list/turfs = ::flood_fill(src.loc, dist)
 
 	for (var/turf/t in turfs)
-		if (turfs[t] == 0 || turfs[t] > 5)
+		if (turfs[t] == 0 || turfs[t] > dist)
+			continue
+
+		if (t.GetUnit())
 			continue
 
 		indicator = new (t)

@@ -49,6 +49,9 @@ proc/flood_fill(turf/start, max_dist = 1)
 
 					turfs[t] = dist
 
+					if (t.GetUnit())
+						continue
+
 					if (t.tile_type == TILE_WALL || t.tile_type == TILE_OBSTACLE)
 						continue
 
