@@ -63,6 +63,12 @@ mob/player/verb/GetView()
 		spawn (30)
 			indicator.loc = null
 
-mob/player/verb/Test()
-	for (var/i = 1 to 23)
-		::chat?.Update("[i]")
+mob/player/verb/FloodFill()
+	var/list/turfs = ::flood_fill(src.loc, 5)
+
+	for (var/turf/t in turfs)
+		if (turfs[t] == 0 || turfs[t] > 5)
+			continue
+
+		t.maptext = "<span style=\"text-align: right; margin-right: 4px; color: #fff; text-shadow: 1px 1px 0 #000;\">[turfs[t]]</span>"
+		new /obj/tile_indicator(t)

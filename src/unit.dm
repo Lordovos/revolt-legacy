@@ -37,20 +37,25 @@ mob/unit/Click()
 			src.Select(c)
 
 			if (!src.is_dead)
-				turfs = oview(src.move_dist, src) - src.loc
+				turfs = ::flood_fill(src.loc, src.move_dist)
 
 				for (var/turf/t in turfs)
+					if (turfs[t] == 0 || turfs[t] > 5)
+						continue
+
+					t.maptext = "<span style=\"text-align: right; margin-right: 4px; color: #fff; text-shadow: 1px 1px 0 #000;\">[turfs[t]]</span>"
 					indicator = new (t)
 					animate(indicator, alpha = 0, time = 10, delay = 20)
 
 					spawn (30)
+						t.maptext = null
 						indicator.loc = null
 
 mob/unit/proc/Select(client/c)
 	c.selected_unit = src
 	c.unit_indicator?.Draw()
 	src.vis_contents += c.unit_indicator
-	// c.chat?.Update("[src.name]\n[src.job], LV [src.level]\nMOVE [src.move_dist]\nHP [src.health]/[src.max_health]\nMP [src.magic]/[src.max_magic]\nREGEN [src.magic_regen]\nAP [src.action]/[src.max_action]")
+	world << "[src.name]\n[src.job], LV [src.level]\nMOVE [src.move_dist]\nHP [src.health]/[src.max_health]\nMP [src.magic]/[src.max_magic]\nREGEN [src.magic_regen]\nAP [src.action]/[src.max_action]"
 
 mob/unit/proc/Unselect(client/c)
 	c.selected_unit = null
