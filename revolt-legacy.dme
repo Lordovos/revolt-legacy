@@ -15,6 +15,7 @@
 #define COLOR_BLUE "#0099cc"
 #define COLOR_YELLOW "#f8b800"
 #define COLOR_GRAY "#d2d2c4"
+#define COLOR_LIGHT "#f8d890"
 
 // BEGIN_INTERNALS
 // END_INTERNALS

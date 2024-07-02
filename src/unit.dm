@@ -48,16 +48,7 @@ mob/unit/Click()
 			src.Select(c)
 
 			if (!src.is_dead)
-				src.path = ::flood_fill(src.loc, src.move)
-
-				for (var/turf/t in src.path)
-					if (src.path[t] == 0 || src.path[t] > src.move)
-						continue
-
-					if (t.GetUnit())
-						continue
-
-					new /obj/tile_indicator(t)
+				src.RenderMoves()
 
 mob/unit/proc/Select(client/c)
 	c.selected_unit = src
@@ -88,15 +79,18 @@ mob/unit/proc/SetMagic(n)
 mob/unit/proc/SetAction(n)
 	src.action = clamp(n, 0, src.max_action)
 
+mob/unit/proc/RenderMoves()
+	src.path = ::flood_fill(src.loc, src.move)
+
+	for (var/turf/t in src.path)
+		if (src.path[t] > src.move)
+			continue
+
+		new /obj/tile_indicator(t)
+
 mob/unit/proc/Death()
 	::chat?.Update("[src.name] dies.")
 	src.icon_state = "grave"
-
-	var/obj/tile_indicator/indicator
-
-	for (var/turf/t in src.path)
-		for (indicator in t)
-			indicator.loc = null
 
 mob/unit/verb/Damage()
 	set src in world
@@ -132,6 +126,39 @@ mob/unit/wizard
 	magic_regen = 10
 	max_move = 5
 	max_action = 4
+
+mob/unit/wizard/verb/BlackHole()
+	set src in world
+
+	if (!src.is_dead)
+		var/damage = roll("8d8+7")
+		var/dist = 3
+		var/list/path = ::flood_fill(src.loc, dist)
+
+		for (var/turf/t in path)
+			if (path[t] == 0 || path[t] > dist)
+				continue
+
+			var/mob/unit/u = t.GetUnit()
+
+			if (u && !u.is_dead)
+				new /obj/unit_message(null, u, damage)
+				u.SetHealth(u.health - damage)
+				animate(u, color = "#d83828", time = 1)
+				animate(color = null, time = 1)
+
+				spawn (2)
+					animate(u, alpha = 0, time = 0.5, loop = 12)
+					animate(alpha = 255, time = 0.5)
+
+				::chat?.Update("[src.name] conjures forth an all-consuming black hole! [u.name] takes [damage] damage.")
+
+				if (u.health == 0)
+					u.is_dead = TRUE
+					u.Death()
+
+	else
+		::chat?.Update("[src.name] is dead.")
 
 mob/unit/recruit
 	name = "Recruit"

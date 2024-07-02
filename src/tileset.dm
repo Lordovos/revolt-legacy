@@ -50,16 +50,7 @@ turf/Click()
 				for (indicator in t)
 					indicator.loc = null
 
-			u.path = ::flood_fill(u.loc, u.move)
-
-			for (var/turf/t in u.path)
-				if (u.path[t] == 0 || u.path[t] > u.move)
-					continue
-
-				if (t.GetUnit())
-					continue
-
-				indicator = new (t)
+			u.RenderMoves()
 
 turf/default
 	icon = 'assets/tileset.dmi'

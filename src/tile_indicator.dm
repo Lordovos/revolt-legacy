@@ -3,7 +3,7 @@ obj/tile_indicator
 	icon_state = "default"
 	mouse_opacity = 0
 
-obj/tile_indicator/New(loc)
+obj/tile_indicator/New()
 	..()
 	src.SetColor(src.loc)
 
@@ -23,3 +23,6 @@ obj/tile_indicator/proc/SetColor(turf/t)
 
 		if (TILE_FOG)
 			src.color = COLOR_GREEN
+
+	if (t?.GetUnit())
+		src.color = COLOR_LIGHT
