@@ -32,6 +32,7 @@
 #include "src\client.dm"
 #include "src\main.dm"
 #include "src\player.dm"
+#include "src\queue.dm"
 #include "src\tile_indicator.dm"
 #include "src\tileset.dm"
 #include "src\unit.dm"
