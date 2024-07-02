@@ -3,7 +3,7 @@ obj/tile_indicator
 	icon_state = "default"
 	mouse_opacity = 0
 
-obj/tile_indicator/New()
+obj/tile_indicator/New(loc)
 	..()
 	src.SetColor(src.loc)
 

@@ -5,6 +5,7 @@ mob/unit
 	pixel_y = 4
 	appearance_flags = PIXEL_SCALE
 
+	var/is_busy = FALSE
 	var/job as text
 	var/level = 0 as num
 	var/health = 0 as num
@@ -34,7 +35,10 @@ mob/unit/Click()
 	if (c)
 		var/mob/unit/u = c.selected_unit
 
-		if (u == src)
+		if (u?.is_busy)
+			::chat?.Update("[u.name] is busy.")
+
+		else if (u == src)
 			u.Unselect(c)
 			c.mob.loc = src.loc
 			c.eye = c.mob
@@ -53,7 +57,6 @@ mob/unit/Click()
 					if (t.GetUnit())
 						continue
 
-					t.maptext = "<span style=\"text-align: right; margin-right: 4px; color: #fff; text-shadow: 1px 1px 0 #000;\">[src.path[t]]</span>"
 					new /obj/tile_indicator(t)
 
 mob/unit/proc/Select(client/c)
@@ -67,8 +70,6 @@ mob/unit/proc/Select(client/c)
 mob/unit/proc/Unselect(client/c)
 	if (c.selected_unit.path)
 		for (var/turf/t in c.selected_unit.path)
-			t.maptext = null
-
 			for (var/obj/tile_indicator/ti in t)
 				ti.loc = null
 
@@ -94,8 +95,6 @@ mob/unit/proc/Death()
 	var/obj/tile_indicator/indicator
 
 	for (var/turf/t in src.path)
-		t.maptext = null
-
 		for (indicator in t)
 			indicator.loc = null
 
@@ -131,7 +130,7 @@ mob/unit/recruit
 	max_health = 20
 	max_magic = 5
 	magic_regen = 1
-	max_move = 4
+	max_move = 20
 	max_action = 2
 
 mob/unit/recruit/verb/Shortsword()

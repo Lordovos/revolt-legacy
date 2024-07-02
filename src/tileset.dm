@@ -16,30 +16,37 @@ turf/Click()
 		if (u.is_dead)
 			::chat?.Update("[u.name] is dead.")
 
+		else if (u.is_busy)
+			::chat?.Update("[u.name] is busy.")
+
 		else if (!(src in u.path) || (src in u.path) && u.path[src] > u.move)
 			::chat?.Update("Beyond [u.name]'s movement range.")
 
-		else if (src.tile_type == TILE_WALL || src.tile_type == TILE_OBSTACLE)
+		else if (src.tile_type in list(TILE_WALL, TILE_OBSTACLE))
 			::chat?.Update("[u.name] cannot move there.")
+
+		else if (src.GetUnit())
+			::chat?.Update("[src.GetUnit().name] is already standing on that tile")
 
 		else
 			var/dist = get_dist(u, src)
-			world << dist
 
 			for (var/i = 1 to dist)
 				if (u.move > 0)
 					var/move = u.move - 1
 
+					u.is_busy = TRUE
 					step_towards(u, src)
 					u.SetMove(move)
+					c.mob.loc = u.loc
 
 				sleep (world.tick_lag * 10)
+
+			u.is_busy = FALSE
 
 			var/obj/tile_indicator/indicator
 
 			for (var/turf/t in u.path)
-				t.maptext = null
-
 				for (indicator in t)
 					indicator.loc = null
 
@@ -52,8 +59,7 @@ turf/Click()
 				if (t.GetUnit())
 					continue
 
-				t.maptext = "<span style=\"text-align: right; margin-right: 4px; color: #fff; text-shadow: 1px 1px 0 #000;\">[u.path[t]]</span>"
-				new /obj/tile_indicator(t)
+				indicator = new (t)
 
 turf/default
 	icon = 'assets/tileset.dmi'
