@@ -19,7 +19,7 @@ turf/Click()
 		else if (u.is_busy)
 			::chat?.Update("[u.name] is busy.")
 
-		else if (!(src in u.path) || (src in u.path) && u.path[src] > u.move)
+		else if (!(src in u.moves) || (src in u.moves) && u.moves[src] > u.move)
 			::chat?.Update("Beyond [u.name]'s movement range.")
 
 		else if (src.tile_type in list(TILE_WALL, TILE_OBSTACLE))
@@ -46,7 +46,7 @@ turf/Click()
 
 			var/obj/tile_indicator/indicator
 
-			for (var/turf/t in u.path)
+			for (var/turf/t in u.moves)
 				for (indicator in t)
 					indicator.loc = null
 
