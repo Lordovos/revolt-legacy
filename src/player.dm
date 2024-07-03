@@ -6,6 +6,10 @@ mob/player/Login()
 	::chat?.Update("Hello, world! Welcome to Revolt Legacy.")
 	::chat?.Update("v[::version.Get()]")
 
+mob/player/verb/Say(t as text)
+	if (t)
+		::chat?.Update(t)
+
 mob/player/verb/ClearChat()
 	::chat?.Clear()
 
