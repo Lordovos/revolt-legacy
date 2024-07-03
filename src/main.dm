@@ -45,10 +45,10 @@ proc/flood_fill(turf/start, max_dist = 1)
 		var/list/turfs = list()
 
 		turfs[start] = 0
-		q.Enqueue(start)
+		q.Push(start)
 
-		while (!q.Empty())
-			var/turf/current = q.Dequeue()
+		while (!q.IsEmpty())
+			var/turf/current = q.Pop()
 
 			for (var/d in list(NORTH, SOUTH, EAST, WEST, NORTHEAST, NORTHWEST, SOUTHEAST, SOUTHWEST))
 				var/turf/t = get_step(current, d)
@@ -67,6 +67,6 @@ proc/flood_fill(turf/start, max_dist = 1)
 					if (dist > max_dist)
 						break
 
-					q.Enqueue(t)
+					q.Push(t)
 
 		return turfs

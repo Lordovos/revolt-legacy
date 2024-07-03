@@ -53,7 +53,7 @@ mob/unit/Click()
 
 mob/unit/proc/Select(client/c)
 	c.selected_unit = src
-	c.unit_indicator?.Draw()
+	c.unit_indicator?.Render()
 	src.vis_contents += c.unit_indicator
 	c.mob.loc = src.loc
 	c.eye = src
