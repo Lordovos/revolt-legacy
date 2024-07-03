@@ -9,11 +9,11 @@ queue/proc/Push(element)
 		src.elements += element
 
 queue/proc/Pop()
-	if (src.elements && src.elements.len > 0)
+	if (!src.IsEmpty())
 		var/element = src.elements[1]
 
 		src.elements?.Cut(1, 2)
 		return element
 
 queue/proc/IsEmpty()
-	return (src.elements && src.elements == 0)
+	return (src.elements?.len == 0)
