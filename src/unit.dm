@@ -28,6 +28,7 @@ mob/unit/New()
 	src.SetHealth(src.max_health)
 	src.SetMagic(src.max_magic)
 	src.SetAction(src.max_action)
+	src.moves = list()
 
 mob/unit/Click()
 	var/client/c = usr.client
@@ -36,7 +37,7 @@ mob/unit/Click()
 		var/mob/unit/u = c.selected_unit
 
 		if (u?.is_busy)
-			::chat?.Update("[u.name] is busy.")
+			new /obj/unit_message(null, u, "Busy")
 
 		else if (u == src)
 			u.Unselect(c)
@@ -47,7 +48,7 @@ mob/unit/Click()
 			u?.Unselect(c)
 			src.Select(c)
 
-			if (!src.is_dead)
+			if (!src.is_dead && src.move > 0)
 				src.RenderMoves()
 
 mob/unit/proc/Select(client/c)
@@ -89,14 +90,13 @@ mob/unit/proc/RenderMoves()
 		new /obj/tile_indicator(t)
 
 mob/unit/proc/Death()
-	::chat?.Update("[src.name] dies.")
 	src.icon_state = "grave"
 
 mob/unit/verb/Damage()
 	set src in world
 
 	if (src.is_dead)
-		::chat?.Update("[src.name] is already dead.")
+		new /obj/unit_message(null, src, "Dead")
 
 	else
 		var/damage = roll("1d6+3")
@@ -187,7 +187,6 @@ mob/unit/recruit/verb/Shortsword()
 			animate(alpha = 255, time = 0.5)
 
 		::chat?.Update("[src.name] slashes with their shortsword! [u.name] takes [damage] damage.")
-		// ::chat?.Update("[u.name] takes [damage] damage! (HP [u.health]/[u.max_health])")
 
 		if (u.health == 0)
 			u.is_dead = TRUE
@@ -233,4 +232,4 @@ mob/unit/vagrant/verb/Dagger()
 					u.Death()
 
 	else
-		::chat?.Update("[src.name] is dead.")
+		new /obj/unit_message(null, src, "Dead")

@@ -8,6 +8,9 @@ client/New()
 
 	return ..()
 
+client/Move()
+	return (!src.selected_unit && ..())
+
 obj/chat
 	screen_loc = "1,1"
 	maptext_width = 400

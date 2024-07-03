@@ -1,8 +1,8 @@
 obj/unit_message
 	layer = FLY_LAYER
 	pixel_z = 8
-	maptext_x = -16
-	maptext_width = 48
+	maptext_x = -24
+	maptext_width = 64
 	maptext_height = 32
 	appearance_flags = RESET_COLOR | RESET_ALPHA | RESET_TRANSFORM
 

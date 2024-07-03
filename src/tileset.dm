@@ -14,19 +14,19 @@ turf/Click()
 		var/mob/unit/u = c.selected_unit
 
 		if (u.is_dead)
-			::chat?.Update("[u.name] is dead.")
+			new /obj/unit_message(null, u, "Dead")
 
 		else if (u.is_busy)
-			::chat?.Update("[u.name] is busy.")
+			new /obj/unit_message(null, u, "Busy")
 
 		else if (!(src in u.moves) || (src in u.moves) && u.moves[src] > u.move)
-			::chat?.Update("Beyond [u.name]'s movement range.")
+			new /obj/unit_message(null, u, "<span style=\"color: [COLOR_RED];\">X</span>")
 
 		else if (src.tile_type in list(TILE_WALL, TILE_OBSTACLE))
-			::chat?.Update("[u.name] cannot move there.")
+			new /obj/unit_message(null, u, "<span style=\"color: [COLOR_RED];\">X</span>")
 
 		else if (src.GetUnit())
-			::chat?.Update("[src.GetUnit().name] is already standing on that tile")
+			new /obj/unit_message(null, u, "<span style=\"color: [COLOR_RED];\">X</span>")
 
 		else
 			var/dist = get_dist(u, src)
@@ -50,7 +50,11 @@ turf/Click()
 				for (indicator in t)
 					indicator.loc = null
 
-			u.RenderMoves()
+			if (u.move > 0)
+				u.RenderMoves()
+
+			else
+				u.moves = list()
 
 turf/default
 	icon = 'assets/tileset.dmi'

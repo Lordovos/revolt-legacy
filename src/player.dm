@@ -15,6 +15,6 @@ mob/player/verb/NextTurn()
 			u.SetMove(u.max_move)
 
 	if (src.client)
-		src.client.selected_unit?.Unselect(src.client)
+		src.client.selected_unit?.RenderMoves()
 
 	::chat?.Update("Next turn.")
