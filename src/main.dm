@@ -12,6 +12,13 @@ world/New()
 	::version = new (0, 0, 1)
 	::chat = new ()
 
+var/list/additional_resources = list(
+	/*
+		Public Pixel font by GGBotNet (https://ggbot.itch.io/)
+		Licensed under CC0 1.0 (https://creativecommons.org/publicdomain/zero/1.0/)
+	*/
+	'assets/fonts/PublicPixel.ttf'
+)
 var/version/version
 var/obj/chat/chat
 
