@@ -21,7 +21,8 @@ proc/additional_resources()
 			Public Pixel font by GGBotNet (https://ggbot.itch.io/)
 			Licensed under CC0 1.0 (https://creativecommons.org/publicdomain/zero/1.0/)
 		*/
-		'assets/fonts/PublicPixel.ttf'
+		'assets/fonts/PublicPixel.ttf',
+		'assets/text.dmi'
 	)
 // Returns all turfs in a line up to max_dist, and encodes them with the distance from the ref.
 proc/get_step_line(atom/ref, dir, max_dist = 1)
