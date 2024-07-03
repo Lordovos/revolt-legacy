@@ -10,12 +10,13 @@
 #define TILE_OBSTACLE 3
 #define TILE_FOG 4
 // Indicator colors.
-#define COLOR_RED "#f83800"
+#define COLOR_RED "#fc7460"
 #define COLOR_GREEN "#83d12c"
 #define COLOR_BLUE "#0099cc"
 #define COLOR_YELLOW "#f8b800"
 #define COLOR_GRAY "#d2d2c4"
 #define COLOR_LIGHT "#f8d890"
+#define COLOR_PURPLE "#f878f8"
 
 // BEGIN_INTERNALS
 // END_INTERNALS
